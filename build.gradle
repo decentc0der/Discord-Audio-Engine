@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral() // Tells Gradle to look in the main storage for libraries
+    maven { url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://jitpack.io' } // DO NOT CHANGE
+}
+
+dependencies {
+    // This is the Discord API Library (JDA)
+    implementation 'net.dv8tion:JDA:5.2.1'
+
+    // Logging (Prevents red error textspam)
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+
+    // Lavaplayer
+    implementation 'dev.arbjerg:lavaplayer:2.2.4'
+
+    //SQLite Driver
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}
