@@ -6,7 +6,7 @@ COPY . .
 RUN ./gradlew shadowJar --no-daemon
 
 # Stage 2: Run the bot
-FROM openjdk:17-slim
+FROM amazoncorretto:17
 WORKDIR /app
 # Copy only from the compiled jar from Stage 1
 COPY --from=build /app/build/libs/*-all.jar app.jar
