@@ -1,0 +1,38 @@
+name: Deploy Bot to AWS
+
+on:
+  push:
+    branches: [ main ]  # Trigger this whenever you push to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            # 1. Stop the currently running bot (if any)
+            docker stop discord-bot || true
+            docker rm discord-bot || true
+            
+            # 2. Go to the folder and get the new code
+            cd Discord-Audio-Engine
+            git pull origin main
+            
+            # 3. Build the new Docker "Lunchbox"
+            docker build -t discord-bot .
+            
+            # 4. Run the new bot in the background
+            # We inject the token here so it's safe
+            docker run -d --name discord-bot \
+            --restart unless-stopped \
+            --net=host \
+            -e DISCORD_TOKEN='${{ secrets.DISCORD_TOKEN }}' \
+            discord-bot
