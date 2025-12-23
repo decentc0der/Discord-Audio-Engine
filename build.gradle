@@ -30,3 +30,7 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+application {
+    mainClass.set('org.example.Main')
+}
